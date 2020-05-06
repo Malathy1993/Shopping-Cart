@@ -19,12 +19,12 @@ mongoose.connect('mongodb://localhost/shopping', {
 
 const Handlebars = require('handlebars')
 const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access')
-const hbs = exphbs.create({
-  defaultLayout: 'layout', 
-  extname: 'hbs',
-  handlebars: allowInsecurePrototypeAccess(Handlebars)
-});
-// app.engine('hbs', exphbs({defaultLayout : 'layout', extname : '.hbs'}));
+// const hbs = exphbs.create({
+//   defaultLayout: 'layout', 
+//   extname: '.hbs',
+//   handlebars: allowInsecurePrototypeAccess(Handlebars)
+// });
+app.engine('hbs', exphbs({defaultLayout : 'layout', extname : '.hbs', handlebars: allowInsecurePrototypeAccess(Handlebars)}));
 app.set('view engine', 'hbs');
 
 // view engine setup

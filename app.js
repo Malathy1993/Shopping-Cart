@@ -9,16 +9,23 @@ const mongoose = require('mongoose');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
-var productSeeder = require('./seed/product-seeder');
+// var productSeeder = require('./seed/product-seeder');
 
 var app = express();
-// mongoose.connect('mongodb://localhost/shopping', {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true
-// });
+mongoose.connect('mongodb://localhost/shopping', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 
-app.engine('.hbs', exphbs({defaultLayout : 'layout', extname : '.hbs'}));
-app.set('view engine', '.hbs');
+const Handlebars = require('handlebars')
+const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access')
+const hbs = exphbs.create({
+  defaultLayout: 'layout', 
+  extname: 'hbs',
+  handlebars: allowInsecurePrototypeAccess(Handlebars)
+});
+// app.engine('hbs', exphbs({defaultLayout : 'layout', extname : '.hbs'}));
+app.set('view engine', 'hbs');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

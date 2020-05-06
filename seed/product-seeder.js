@@ -46,23 +46,16 @@ var products = [
 
 var done = 0;
 for(var i=0; i<products.length; i++){
-    products[i].save()
-    .then(result => {
-        console.log("Created");
-        
-    })
-    .catch(err =>{
-        console.log("error");
-        
+    products[i].save(function(err,result){
+        done++;
+        if(done === products.length)
+            {
+                exit();
+            }
     })
     
 }
 
 function exit(){
-    // mongoose.disconnect();
+    mongoose.disconnect();
 }
-// done++;
-// if(done === products.length)
-//     {
-//         exit();
-//     }

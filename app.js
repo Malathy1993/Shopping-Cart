@@ -9,6 +9,7 @@ var session = require('express-session')
 var bcrypt = require('bcrypt');
 var passport = require('passport');
 var flash = require('connect-flash');
+var expressValidator = require('express-validator');
 
 var indexRouter = require('./routes/index');
 
@@ -38,6 +39,23 @@ app.set('view engine', 'hbs');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+// validators
+app.use(expressValidator({
+  errorFormatter: function(param, msg, value) {
+      var namespace = param.split('.')
+      , root    = namespace.shift()
+      , formParam = root;
+ 
+    while(namespace.length) {
+      formParam += '[' + namespace.shift() + ']';
+    }
+    return {
+      param : formParam,
+      msg   : msg,
+      value : value
+    };
+  }
+}));
 app.use(cookieParser());
 app.use(session({
   secret: 'keyboard cat',

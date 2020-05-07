@@ -23,7 +23,6 @@ router.get('/', function(req, res, next) {
 router.get('/user/signup', (req, res, next) => {
   var messages = req.flash('error');
   console.log("messages : ",messages);
-  
   res.render('user/signup', 
   {csrfToken : req.csrfToken(),
   messages : messages,
@@ -33,12 +32,26 @@ router.get('/user/signup', (req, res, next) => {
 router.post('/user/signup', passport.authenticate('local.signup',{
   successRedirect : '/user/profile',
   failureRedirect : '/user/signup',
-  failureFlash: "Invalid Username or Password!" ,
   failureFlash : true
 }))
 
 router.get('/user/profile', (req, res, next) => {
   res.render('user/profile')
 })
+
+router.get('/user/signin', (req, res, next) => {
+  var messages = req.flash('error');
+  console.log("messages : ",messages);
+  res.render('user/signin', 
+  {csrfToken : req.csrfToken(),
+  messages : messages,
+  hasError : messages.length > 0})
+})
+
+router.post('/user/signin', passport.authenticate('local.signin',{
+  successRedirect : '/user/profile',
+  failureRedirect : '/user/signin',
+  failureFlash : true
+}))
 
 module.exports = router;

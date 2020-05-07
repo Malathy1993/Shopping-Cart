@@ -12,7 +12,7 @@ userSchema.methods.encryptPassword = function(password){
 }
 
 userSchema.methods.confirmPassword = function(password){
-    return bcrypt.compare(password, this.password);
+    return bcrypt.compareSync(password, this.password);
 }
 
 module.exports = mongoose.model('User',userSchema);

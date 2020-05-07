@@ -17,26 +17,79 @@ passport.serializeUser(function(user, done) {
     passwordField : 'password',
     passReqToCallback : true
   }, function(req, email, password, done){
-    console.log("email 11111111111 : ",'email');
-      User.findOne({'email' : email}, function(err, user){
+
+    // Validation
+    req.checkBody('email','Email is invalid').notEmpty().isEmail();
+    req.checkBody('password', 'Password is invalid').notEmpty().isLength({min:4});
+
+    var errors =  req.validationErrors();
+    console.log("err",errors);
+    if(errors){
+      var messages = [];
+      errors.forEach(error => {
+        messages.push(error.msg);
+      });
+      return done(null, false, req.flash('error', messages))
+    }
+    User.findOne({'email' : email}, function(err, user){
+      if(err){
+        return done(err);
+      }
+      if(user){
+        // return done(null, false,req.flash('error', 'Email is Alraedy in Use!'))
+        return done(null, false, {message :'Email is Alraedy in Use!'})
+      }
+      var newUser = new User();
+      newUser.email = email,
+      newUser.password = newUser.encryptPassword(password);
+      newUser.save(function(err, result){
         if(err){
           return done(err);
         }
-        if(user){
-          return done(null, false, {message :'Email is Alraedy in Use!'})
-        }
-        console.log("email 22222222222 : ",email);
-        var newUser = new User();
-        newUser.email = email,
-        newUser.password = newUser.encryptPassword(password);
-        newUser.save(function(err, result){
-          if(err){
-            return done(err);
-          }
-          console.log("password hash : ",newUser.password);
-          
-          return done(null, newUser);
-        })
+        console.log("password hash : ",newUser.password);
+        console.log("result : ",result);
+        console.log("newUser : ",newUser);
+        return done(null, newUser);
       })
-     }
+    })
+    }
+  ))
+
+  passport.use('local.signin',new localStrategy({
+    usernameField : 'email',
+    passwordField : 'password',
+    passReqToCallback : true
+  }, function(req, email, password, done){
+
+    // Validation
+    req.checkBody('email','Email is invalid').notEmpty().isEmail();
+    req.checkBody('password', 'Password is invalid').notEmpty();
+
+    var errors =  req.validationErrors();
+    console.log("err",errors);
+    if(errors){
+      var messages = [];
+      errors.forEach(error => {
+        messages.push(error.msg);
+      });
+      return done(null, false, req.flash('error', messages))
+    }
+    User.findOne({'email' : email}, function(err, user){
+      // console.log("user : ",user);
+      
+      if(err){
+        return done(err);
+      }
+      if(!user){
+        return done(null, false, {message :'No User Found!'})
+      }
+      if(!user.confirmPassword(password)){
+        // return done(null, false,req.flash('error', 'Email is Alraedy in Use!'))
+        return done(null, false, {message :'Wrong Password!'})
+      }
+      // console.log("password match: ",user.confirmPassword(password));
+      
+      return done(null, user);
+    })
+    }
   ))

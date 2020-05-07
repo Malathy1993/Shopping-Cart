@@ -1,0 +1,42 @@
+var passport = require('passport');
+var User = require('../models/user');
+var localStrategy = require('passport-local').Strategy;
+
+passport.serializeUser(function(user, done) {
+    done(null, user.id);
+  });
+  
+  passport.deserializeUser(function(id, done) {
+    User.findById(id, function (err, user) {
+      done(err, user);
+    });
+  });
+
+  passport.use('local.signup',new localStrategy({
+    usernameField : 'email',
+    passwordField : 'password',
+    passReqToCallback : true
+  }, function(req, email, password, done){
+    console.log("email 11111111111 : ",'email');
+      User.findOne({'email' : email}, function(err, user){
+        if(err){
+          return done(err);
+        }
+        if(user){
+          return done(null, false, {message :'Email is Alraedy in Use!'})
+        }
+        console.log("email 22222222222 : ",email);
+        var newUser = new User();
+        newUser.email = email,
+        newUser.password = newUser.encryptPassword(password);
+        newUser.save(function(err, result){
+          if(err){
+            return done(err);
+          }
+          console.log("password hash : ",newUser.password);
+          
+          return done(null, newUser);
+        })
+      })
+     }
+  ))

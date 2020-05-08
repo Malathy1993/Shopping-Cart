@@ -10,8 +10,10 @@ var bcrypt = require('bcrypt');
 var passport = require('passport');
 var flash = require('connect-flash');
 var expressValidator = require('express-validator');
+const MongoStore = require('connect-mongo')(session);
 
 var indexRouter = require('./routes/index');
+var userRouter = require('./routes/user');
 
 // var productSeeder = require('./seed/product-seeder');
 
@@ -60,15 +62,21 @@ app.use(cookieParser());
 app.use(session({
   secret: 'keyboard cat',
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  store: new MongoStore({ mongooseConnection: mongoose.connection }),
+  cookie : { maxAge : 180 * 60 * 1000}
 }));
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.get('*',function(req, res, next){
+  res.locals.login = req.isAuthenticated();
+  next();
+})
 app.use('/', indexRouter);
-
+app.use('/user', userRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

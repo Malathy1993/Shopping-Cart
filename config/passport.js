@@ -59,9 +59,7 @@ passport.serializeUser(function(user, done) {
     usernameField : 'email',
     passwordField : 'password',
     passReqToCallback : true
-  }, function(req, email, password, done){
-    console.log("body : ",req.body.email);
-    
+  }, function(req, email, password, done){ 
     // Validation
     req.checkBody('email','Email is invalid').notEmpty().isEmail();
     req.checkBody('password', 'Password is invalid').notEmpty();

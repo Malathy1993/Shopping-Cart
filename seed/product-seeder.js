@@ -8,39 +8,33 @@ mongoose.connect('mongodb://localhost/shopping', {
 var products = [
     new Product({
         imagePath : "https://www.pulse.lk/wp-content/uploads/2016/07/mandalay-bay-retail-resort-shops-shopping-bags.tif.jpg",
-        title : "Dark Souls1",
+        title : "Dark Souls",
         description : "I died",
         price : 34,
     }),
     new Product({
-        imagePath : "https://www.pulse.lk/wp-content/uploads/2016/07/mandalay-bay-retail-resort-shops-shopping-bags.tif.jpg",
-        title : "Dark Souls2",
-        description : "I died",
-        price : 34,
+        imagePath: 'https://upload.wikimedia.org/wikipedia/en/5/5e/Gothiccover.png',
+        title: 'Gothic Video Game',
+        description: 'Awesome Game!!!!',
+        price: 10
     }),
     new Product({
-        imagePath : "https://www.pulse.lk/wp-content/uploads/2016/07/mandalay-bay-retail-resort-shops-shopping-bags.tif.jpg",
-        title : "Dark Souls",
-        description : "I died3",
-        price : 34,
+        imagePath: 'http://eu.blizzard.com/static/_images/games/wow/wallpapers/wall2/wall2-1440x900.jpg',
+        title: 'World of Warcraft Video Game',
+        description: 'Also awesome? But of course it was better in vanilla ...',
+        price: 20
     }),
     new Product({
-        imagePath : "https://www.pulse.lk/wp-content/uploads/2016/07/mandalay-bay-retail-resort-shops-shopping-bags.tif.jpg",
-        title : "Dark Souls",
-        description : "I died4",
-        price : 34,
+        imagePath: 'https://support.activision.com/servlet/servlet.FileDownload?file=00PU000000Rq6tz',
+        title: 'Call of Duty Video Game',
+        description: 'Meh ... nah, it\'s okay I guess',
+        price: 40
     }),
     new Product({
-        imagePath : "https://www.pulse.lk/wp-content/uploads/2016/07/mandalay-bay-retail-resort-shops-shopping-bags.tif.jpg",
-        title : "Dark Souls",
-        description : "I died5",
-        price : 34,
-    }),
-    new Product({
-        imagePath : "https://www.pulse.lk/wp-content/uploads/2016/07/mandalay-bay-retail-resort-shops-shopping-bags.tif.jpg",
-        title : "Dark Souls",
-        description : "I died6",
-        price : 34,
+        imagePath: 'https://d1r7xvmnymv7kg.cloudfront.net/sites_products/darksouls3/assets/img/DARKSOUL_facebook_mini.jpg',
+        title: 'Dark Souls 3 Video Game',
+        description: 'I died!',
+        price: 50
     })
 ];
 

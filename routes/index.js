@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var Product = require('../models/product');
 var Cart = require('../models/cart');
+var Order = require('../models/order')
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -48,6 +49,7 @@ router.get('/checkout', (req,res) => {
   if(!req.session.cart){
     return res.redirect('/shopping-cart')
   }
+  // cart obj wo constructor also possible
   var cart = req.session.cart;
   var errMsg = req.flash('error')[0];
   // console.log("cart",req.session.cart);
@@ -73,27 +75,24 @@ router.post('/checkout', function(req, res, next) {
   }, function(err, charge) {
       if (err) {
           req.flash('error', err.message);
-          console.log("error in server");
+          console.log("error in server");//card no : 4000000000009995
           
           return res.redirect('/checkout');
       }
       console.log("Stripe Token : ",req.body.stripeToken);
-      
-      req.flash('success', 'Successfully bought product!');
-      req.session.cart = null;
-      res.redirect('/');
-      // var order = new Order({
-      //     user: req.user,
-      //     cart: cart,
-      //     address: req.body.address,
-      //     name: req.body.name,
-      //     paymentId: charge.id
-      // });
-      // order.save(function(err, result) {
-      //     req.flash('success', 'Successfully bought product!');
-      //     req.session.cart = null;
-      //     res.redirect('/');
-      // });
+
+      var order = new Order({
+          user: req.user,
+          cart: cart,
+          address: req.body.address,
+          name: req.body.name,
+          paymentId: charge.id
+      });
+      order.save(function(err, result) {
+          req.flash('success', 'Successfully bought product!');
+          req.session.cart = null;
+          res.redirect('/');
+      });
   }); 
 });
 module.exports = router;

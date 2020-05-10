@@ -5,7 +5,7 @@
         <h2>My Orders</h2>
         {{# each orders }}
         {{!-- {{log this}} --}}
-            <div class="panel panel-default">
+            <div class="panel panel-default" style = "background: rgb(213, 225, 228);padding:2px">
                 <div class="panel-body">
                     <ul class="list-group">
                         {{!-- {{log this}} --}}
@@ -21,6 +21,12 @@
                     <strong>Total Price: ${{ this.cart.totalPrice }}</strong>
                 </div>
             </div>
+        {{else}}
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3 style="color: rgb(207, 14, 14)"><strong>No Orders You Made!</strong></h3>
+             </div>
+        </div>
         {{/each}}
     </div>
 </div>

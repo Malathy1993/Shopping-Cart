@@ -82,6 +82,7 @@ router.post('/checkout', isLoggedIn, function(req, res, next) {
       console.log("Stripe Token : ",req.body.stripeToken);
 
       var order = new Order({
+        // passport returns user if loggedIn
           user: req.user,
           cart: cart,
           address: req.body.address,

@@ -26,7 +26,7 @@ var products = [
     }),
     new Product({
         imagePath: 'https://support.activision.com/servlet/servlet.FileDownload?file=00PU000000Rq6tz',
-        title: 'Call of Duty Video Game',
+        title: 'Call of Duty Video Game.jpg',
         description: 'Meh ... nah, it\'s okay I guess',
         price: 40
     }),
